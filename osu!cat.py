@@ -111,7 +111,9 @@ print('Before you can use this program you need to configure some things')
 while True:
     k1 = input('Key 1: ')
     k2 = input('Key 2: ')
-    if len(k1) == 1 and len(k2) == 1:
+    k3 = input('Key 3: ')
+    k4 = input('Key 4: ')
+    if len(k1) == 1 and len(k2) == 1 and len(k3) == 1 and len(k4) == 1:
         break
     else:
         print('Keys can only be 1 character long')
@@ -167,18 +169,22 @@ w_size = root.winfo_width, root.winfo_height
 w_size_prev = w_size
 k1_p_prev = False
 k2_p_prev = False
+k3_p_prev = False
+k4_p_prev = False
 first_iteration = True
 force_update = True
 last_hit = 1
 
 def iterate():
-    global f, f_prev, k1_p_prev, k2_p_prev, last_hit, drag, w_size_prev, w_size, first_iteration, force_update
+    global f, f_prev, k1_p_prev, k2_p_prev, k3_p_prev, k4_p_prev, last_hit, drag, w_size_prev, w_size, first_iteration, force_update
     if drag:
         root.after(5, iterate)
         return
 
     k1_p = is_pressed(k1)
     k2_p = is_pressed(k2)
+    k3_p = is_pressed(k3)
+    k4_p = is_pressed(k2)
     x, y = GetCursorPos()
     f = find_frame(x, y, f)
 
@@ -199,7 +205,7 @@ def iterate():
 
     resize()
 
-    if f == f_prev and k1_p == k1_p_prev and k2_p == k2_p_prev:
+    if f == f_prev and k1_p == k1_p_prev and k2_p == k2_p_prev and k3_p == k3_p_prev and k4_p == k4_p_prev:
         root.after(5, iterate)
         return
 
@@ -208,6 +214,10 @@ def iterate():
         if (k1_p and not k1_p_prev) or (not k2_p and k2_p_prev):
             final_hit = 1
         elif (k2_p and not k2_p_prev) or (not k1_p and k1_p_prev):
+            final_hit = 2
+        elif (k3_p and not k3_p_prev) or (not k4_p and k4_p_prev):
+            final_hit = 1
+        elif (k4_p and not k4_p_prev) or (not k3_p and k3_p_prev):
             final_hit = 2
         else:
             final_hit = last_hit
@@ -224,6 +234,8 @@ def iterate():
     f_prev = f
     k1_p_prev = k1_p
     k2_p_prev = k2_p
+    k3_p_prev = k3_p
+    k4_p_prev = k4_p
 
     image_label.configure(image=n_base_img)
     image_label.image = n_base_img
